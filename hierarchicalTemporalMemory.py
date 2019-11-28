@@ -1,4 +1,6 @@
+import numpy as np
 from neuron import Neuron
+from scipy.sparse import lil_matrix
 
 
 class hierarchicalTemporalMemory(object):
@@ -18,34 +20,57 @@ class hierarchicalTemporalMemory(object):
         self.activationThreshold = activationThreshold
         self.synapticThreshold = synapticThreshold
         self.discountFactor = discountFactor
-        self.cellularLayer = [self.cellsPerColumn][self.numColumn]
+        self.cellularLayer = [ [Neuron(j,
+                                       i,
+                                       numColumn,
+                                       cellsPerColumn,
+                                       segmentsPerCell=8,
+                                       activationThreshold=15,
+                                       synapticThreshold=.5,
+                                       discountFactor=.1) for i in range(self.numColumn)] for j in range(self.cellsPerColumn) ]
+
+        self.activatedNurons = lil_matrix((cellsPerColumn, numColumn))
+        self.previouslyActivatedNeurons = lil_matrix((cellsPerColumn, numColumn))
+        self.predictedNeurons = lil_matrix((cellsPerColumn, numColumn))
+        self.previouslyPredictedNeurons = lil_matrix((cellsPerColumn, numColumn))
 
 
+
+    def feedForward(self):
+        inputChar, inputSDR = self.feeder.feed()
+        return inputChar, inputSDR
+
+
+    def activateNeurons(self):
+        inputChar, inputSDR = self.feedForward()
+        flag = 0
+
+        for item in inputSDR:
+            ###########  activate a cell in a winning column if it was previously in a predictive state #########
+            for i in range(self.cellsPerColumn):
+                if self.previouslyPredictedNeurons[i, item] == 1:
+                    self.activatedNurons[i,item] = 1
+                    #print(i,item,flag)
+                    flag = 1
+                    break
+            ######## activate all cells in that column #########
+            if flag == 0:
+                for i in range(self.cellsPerColumn):
+                    self.activatedNurons[i, item] = 1
+                    #print(i,item,flag)
+            else:
+                flag = 0
+
+
+
+
+    def predictorNeurons(self):
         for i in range(self.cellsPerColumn):
             for j in range(self.numColumn):
-                self.cellularLayer[i][j] = Neuron(i,
-                                                  j,
-                                                  segmentsPerCell=self.segmentsPerCell,
-                                                  activationThreshold=self.activationThreshold,
-                                                  synapticThreshold=self.synapticThreshold,
-                                                  discountFactor=self.discountFactor)
+                if self.cellularLayer[i][j].hasActiveSegment(self.activatedNurons) == True:
+                    self.predictedNeurons[i, j] = 1
 
-        # randomModule = RandomModule(seed=seed,
-        #                             numColumn=numColumn,
-        #                             cellsPerColumn=cellsPerColumn)
-        # self.numColumn = numColumn
-        # self.columns = []
-        # self.burstedColumns = np.full(numColumn, False)
-        # self.predictedCells = np.full((numColumn, cellsPerColumn), False)
-        # self.activatedCells = np.full((numColumn, cellsPerColumn), False)
-        # self.previousPredictedCells = np.full((numColumn, cellsPerColumn), False)
-        # self.previousActivatedCells = np.full((numColumn, cellsPerColumn), False)
-        #
-        # self.updateWeight = updateWeight
-        # self.predictedColumns = np.full(numColumn, False)
-        #
-        # self.iteration = 0
-        # self.results = []
+
 
 
 

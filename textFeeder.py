@@ -26,4 +26,5 @@ class TXTFeeder(Feeder):
         inputChar = self.char_list[self.readIndex]
         inputSDR = self.char_sdr.getSDR(inputChar)
         return inputChar, inputSDR
+        #return inputSDR
 

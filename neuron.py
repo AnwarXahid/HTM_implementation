@@ -1,5 +1,8 @@
 import numpy as np
 import random
+from scipy.sparse import lil_matrix
+from scipy import linalg
+
 
 
 
@@ -20,12 +23,14 @@ class Segment(object):
         self.potentialSynapses = potentialSynapses
         highestIndex = (self.numColumn * self.cellsPerColumn) - 1
         randomCell = [random.randint(0, highestIndex) for i in range(self.potentialSynapses)]
-        self.distalSegment = np.zeros((self.cellsPerColumn, self.numColumn))
+        self.distalSegment = lil_matrix((self.cellsPerColumn, self.numColumn))
         for rCell in randomCell:
             r = rCell // self.numColumn
             c = rCell % self.numColumn
-            self.distalSegment[r][c] = random.uniform(0, 1)            #randomly selected permanence value
-        self.distalSegment[self.row][self.column] = 0                  #avoiding self-connected synapse
+            self.distalSegment[r, c] = random.uniform(0, 1)            #randomly selected permanence value
+        self.distalSegment[self.row, self.column] = 0                  #avoiding self-connected synapse
+
+
 
 
     def getDistalSegment(self):
@@ -33,11 +38,12 @@ class Segment(object):
 
 
     def connectedDistalSegment(self, threshold=0.5):
-        conDistalSegment = np.zeros((self.cellsPerColumn, self.numColumn))
-        for i in range(self.cellsPerColumn):
-            for j in range(self.numColumn):
-                if self.distalSegment[i][j] > threshold:
-                    conDistalSegment[i][j] = 1
+        conDistalSegment = lil_matrix((self.cellsPerColumn, self.numColumn))
+        nonZeroSynapes = self.distalSegment.nonzero()
+        for item in nonZeroSynapes:
+            x_index, y_index = item
+            if self.distalSegment[x_index, y_index] > threshold:
+                conDistalSegment[x_index, y_index] = 1
 
         return conDistalSegment
 
@@ -48,34 +54,35 @@ class Neuron(object):
     def __init__(self,
                  row,
                  column,
+                 numColumn=512,
+                 cellsPerColumn=32,
                  segmentsPerCell=4,
                  activationThreshold=15,
                  synapticThreshold=0.5,
-                 discountFactor=0.1):
+                 discountFactor=0.1,
+                 feeder = None):
         self.row = row
         self.column = column
+        self.segmentsPerCell = segmentsPerCell
         self.activationThreshold = activationThreshold
         self.synapticThreshold = synapticThreshold
         self.discountFactor = discountFactor
         self.segments = []
 
         for i in range(segmentsPerCell):
-            self.segments.append(Segment(self.row, self.column))
+            self.segments.append(Segment(self.row, self.column, numColumn, cellsPerColumn))
 
 
 
 
+    def hasActiveSegment(self, currentState):
+        for i in range(self.segmentsPerCell):
+            conSeg = self.segments[i].connectedDistalSegment(self.synapticThreshold)
+            conSyn = np.multiply(conSeg.toarray(), currentState.toarray())
+            if linalg.norm(conSyn.todense(), ord=1) > self.activationThreshold:
+                return True
 
-# s = Segment()
-# s.initDistalSegment(15, 400)
-# w = s.connectedDistalSegment()
-# count = 0
-# for i in range(0,32):
-#     for j in range(0,512):
-#         if w[i][j] > 0 :
-#             count += 1
-# print(count)
-# n = Neuron(12, 106)
-# for segment in n.segments:
-#     print(segment.connectedDistalSegment(.5))
+        return False
+
+
 

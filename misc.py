@@ -1,5 +1,7 @@
 import numpy as np
 import random
+from neuron import Neuron
+from scipy.sparse import lil_matrix
 
 
 
@@ -122,9 +124,29 @@ class TXTFeeder(Feeder):
 
 
 ############ Testing############
-temp = TXTFeeder("feed_me.txt")
-out1, out2 = temp.feed()
-print(out1)
-print("\n \n \n \n")
-print(out2)
-print(random.uniform(0, 1))
+# temp = TXTFeeder("feed_me.txt")
+# out1, out2 = temp.feed()
+# print(out1)
+# print("\n \n \n \n")
+# print(out2)
+# print(random.uniform(0, 1))
+count = 0
+a = lil_matrix((6, 5))
+a[2, 3] = 5
+a[3,2] = 1
+b = a.nonzero()
+for item in b:
+    c, d = item
+    print(a[c, d])
+
+# for i in range(6):
+#     for j in range(5):
+#         print(count)
+#         if a[i, j] > 1:
+#             break
+#         count += 1
+    #print(count)
+#print(count)
+
+
+
