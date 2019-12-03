@@ -130,14 +130,14 @@ class TXTFeeder(Feeder):
 # print("\n \n \n \n")
 # print(out2)
 # print(random.uniform(0, 1))
-count = 0
-a = lil_matrix((6, 5))
-a[2, 3] = 5
-a[3,2] = 1
-b = a.nonzero()
-for item in b:
-    c, d = item
-    print(a[c, d])
+# count = 0
+# a = lil_matrix((6, 5))
+# a[2, 3] = 5
+# a[3,2] = 1
+# b = a.nonzero()
+# for item in b:
+#     c, d = item
+#     print(a[c, d])
 
 # for i in range(6):
 #     for j in range(5):
@@ -148,5 +148,27 @@ for item in b:
     #print(count)
 #print(count)
 
+x1 = np.arange(9.0).reshape((3, 3))
+# print(x1)
+x2 = np.arange(9.0).reshape((3, 3))
 
+# assert (z in x1 for z in x2)
+#
+# print(x2)
+# print(np.multiply(x1, x2))
+
+# file = open("feed_me.txt", "r")
+#
+# #read the content of file and replace spaces with nothing
+# data = file.read().replace(" ","")
+#
+# #get the length of the data
+# number_of_characters = len(data)
+# print(number_of_characters)
+#
+# test= lil_matrix((5, 6))
+# print(test.toarray())
+
+p = 3.5
+print("my name is zahid :" + str(p))
 

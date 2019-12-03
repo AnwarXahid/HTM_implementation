@@ -2,7 +2,6 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="a58838c0-33d8-4c4a-86ed-0e409ce68401" name="Default" comment="">
-      <change afterPath="$PROJECT_DIR$/.idea/vcs.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/hierarchicalTemporalMemory.py" beforeDir="false" afterPath="$PROJECT_DIR$/hierarchicalTemporalMemory.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/misc.py" beforeDir="false" afterPath="$PROJECT_DIR$/misc.py" afterDir="false" />
@@ -30,7 +29,7 @@
   <component name="ProjectLevelVcsManager" settingsEditedManually="true" />
   <component name="PropertiesComponent">
     <property name="SHARE_PROJECT_CONFIGURATION_FILES" value="true" />
-    <property name="settings.editor.selected.configurable" value="com.jetbrains.python.configuration.PyActiveSdkModuleConfigurable" />
+    <property name="settings.editor.selected.configurable" value="preferences.lookFeel" />
   </component>
   <component name="RunDashboard">
     <option name="ruleStates">
@@ -44,7 +43,7 @@
       </list>
     </option>
   </component>
-  <component name="RunManager" selected="Python.test">
+  <component name="RunManager" selected="Python.misc">
     <configuration name="hierarchicalTemporalMemory" type="PythonConfigurationType" factoryName="Python" temporary="true">
       <module name="HTM_implementation" />
       <option name="INTERPRETER_OPTIONS" value="" />
@@ -152,11 +151,11 @@
     </configuration>
     <recent_temporary>
       <list>
-        <item itemvalue="Python.test" />
         <item itemvalue="Python.misc" />
+        <item itemvalue="Python.test" />
+        <item itemvalue="Python.neuron" />
         <item itemvalue="Python.hierarchicalTemporalMemory" />
         <item itemvalue="Python.textFeeder" />
-        <item itemvalue="Python.neuron" />
       </list>
     </recent_temporary>
   </component>
